@@ -1,4 +1,8 @@
 defmodule ExDropbox do
+  @moduledoc """
+    Client api for Dropbox
+  """
+
   @doc "it sets the configuration of the api - api_key, api_secret, access_token"
   defdelegate configure(auth), to: ExDropbox.Configuration, as: :configure
 
