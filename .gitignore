@@ -1,0 +1,9 @@
+.DS_Store
+/_build
+/cover
+/deps
+erl_crash.dump
+*.ez
+*.beam
+*.sublime-project
+*.sublime-workspace
