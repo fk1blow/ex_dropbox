@@ -1,9 +1,9 @@
 defmodule ExDropbox.Configuration do
-  def configure(auth) do
+  def set(auth) do
     Application.put_env :ex_dropbox, :auth, auth
   end
 
-  def configuration do
+  def get do
     Application.get_env :ex_dropbox, :auth
   end
 end

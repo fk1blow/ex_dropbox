@@ -1,9 +1,6 @@
 defmodule ExDropbox.Request do
-  # @dropbox_endpoint "https://api.dropbox.com/1"
-
-  def get(url) do
-  end
-
-  def build_url(endpoint, headers \\ %{}) do
+  def get(url, headers \\ %{}) do
+    res = HTTPoison.get!(url, headers)
+    res.body
   end
 end
