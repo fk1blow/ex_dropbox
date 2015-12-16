@@ -21,9 +21,7 @@ defmodule ExDropbox.Api.Base do
     end
   end
 
-  defp make_request({:error, reason}, _, _) do
-    {:error, reason}
-  end
+  defp make_request({:error, reason}, _, _), do: {:error, reason}
 
   defp make_request(token, api_host, api_resource) do
     {:ok, "should perform request"}
