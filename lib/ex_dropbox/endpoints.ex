@@ -1,4 +1,4 @@
-defmodule ExDropbox.Endpoints do
+defmodule ExDropbox.Api.Endpoints do
   @dropbox_api_version 1
 
   @dropbox_api_hostnames [
@@ -7,15 +7,15 @@ defmodule ExDropbox.Endpoints do
     notify: "notify.dropbox.com"
   ]
 
-  def api do
+  def api_hostname do
     "https://#{@dropbox_api_hostnames[:api]}/#{@dropbox_api_version}"
   end
 
-  def content do
+  def content_hostname do
     "https://#{@dropbox_api_hostnames[:content]}/#{@dropbox_api_version}"
   end
 
-  def notify do
+  def notify_hostname do
     "https://#{@dropbox_api_hostnames[:notify]}/#{@dropbox_api_version}"
   end
 end
