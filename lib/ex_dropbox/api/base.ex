@@ -10,13 +10,25 @@ defmodule ExDropbox.Api.Base do
     |> handle_response
   end
 
-  defp validate_request(access_token) do
-    case access_token do
-      token when is_bitstring(token) -> token
-      nil -> {:error, "invalid or undefined access token"}
-      _ -> {:error, "invalid access token"}
-    end
+  @moduledoc """
+    request validations - basically, checks for access_token validity
+  """
+
+  defp validate_request(token) when is_bitstring(token) do
+    token
   end
+
+  defp validate_request(nil) do
+    {:error, "invalid or undefined access token"}
+  end
+
+  defp validate_request(_) do
+    {:error, "invalid access token"}
+  end
+
+  @moduledoc """
+    handles request for depending on the validation - makes the httpoison request
+  """
 
   defp handle_request({:error, reason}, _, _), do: {:error, reason}
 
@@ -25,6 +37,10 @@ defmodule ExDropbox.Api.Base do
     url = api_host <> api_resource
     HTTPoison.get(url, headers)
   end
+
+  @moduledoc """
+    handle response from httpoison call
+  """
 
   defp handle_response({:ok, %HTTPoison.Response{status_code: 200, body: body}}) do
     {:ok, body}
