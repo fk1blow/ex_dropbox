@@ -8,21 +8,21 @@ defmodule ExDropbox.Api.Base do
 
   def get(api_host, api_resource) do
     Config.get[:access_token]
-    |> validate_request(api_host, api_resource)
+    |> validate_request
     |> make_request(api_host, api_resource)
   end
 
-  defp validate_request(access_token, api_host, api_resource) do
+  defp validate_request(access_token) do
     token_length = String.length(access_token)
     case access_token do
       token when token_length > 1 -> token
-      nil -> {:error, "invalid access token"}
+      nil -> {:error, "invalid or undefined access token"}
       _ -> {:error, "invalid access token"}
     end
   end
 
-  defp make_request({:error, "invalid access token"}, _, _) do
-    {:error, "cannot perform request - invalid access token"}
+  defp make_request({:error, reason}, _, _) do
+    {:error, reason}
   end
 
   defp make_request(token, api_host, api_resource) do
