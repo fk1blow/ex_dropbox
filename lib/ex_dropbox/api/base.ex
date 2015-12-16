@@ -14,17 +14,11 @@ defmodule ExDropbox.Api.Base do
     request validations - basically, checks for access_token validity
   """
 
-  defp validate_request(token) when is_bitstring(token) do
-    token
-  end
+  defp validate_request(token) when is_bitstring(token), do: token
 
-  defp validate_request(nil) do
-    {:error, "invalid or undefined access token"}
-  end
+  defp validate_request(nil), do: {:error, "invalid access token"}
 
-  defp validate_request(_) do
-    {:error, "invalid access token"}
-  end
+  defp validate_request(_), do: {:error, "invalid access token"}
 
   @moduledoc """
     handles request for depending on the validation - makes the httpoison request
