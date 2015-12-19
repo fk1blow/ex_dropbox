@@ -8,7 +8,6 @@ defmodule ExDropbox.Api.Base do
     |> validate_request
     |> handle_request(api_host, api_resource)
     |> handle_response
-    # |> parse_response
   end
 
   @moduledoc """
