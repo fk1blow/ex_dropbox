@@ -40,6 +40,10 @@ defmodule ExDropbox.Api.Base do
     {:ok, body}
   end
 
+  defp handle_response({:ok, %HTTPoison.Response{status_code: 400, body: body}}) do
+    {:error, body}
+  end
+
   defp handle_response({:ok, %HTTPoison.Response{status_code: 404}}) do
     {:error, "resource not found"}
   end
