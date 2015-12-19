@@ -16,6 +16,16 @@ defmodule ExDropbox do
     TODO: should i add the authorize functions? do i really need them?
   """
 
-  @doc "fetch the user account info"
+  @doc "Retrieves information about the user's account"
   defdelegate account_info, to: ExDropbox.Api.Account, as: :account_info
+
+  @doc "Downloads a file"
+  defdelegate files, to: ExDropbox.Api.Files, as: :files
+
+  @doc "Retrieves file and folder metadata"
+  defdelegate metadata, to: ExDropbox.Api.Metadata, as: :metadata
+
+  @doc "Retrieves metadata about a shared link"
+  defdelegate metadata_link, to: ExDropbox.Api.Metadata, as: :metadata_link
+
 end
