@@ -8,6 +8,7 @@ defmodule ExDropbox.Api.Base do
     |> validate_request
     |> handle_request(api_host, api_resource)
     |> handle_response
+    # |> parse_response
   end
 
   @moduledoc """
@@ -47,4 +48,6 @@ defmodule ExDropbox.Api.Base do
   defp handle_response({:error, %HTTPoison.Error{reason: reason}}) do
     {:error, "connection refused"}
   end
+
+  defp handle_response({:error, reason}), do: {:error, reason}
 end
