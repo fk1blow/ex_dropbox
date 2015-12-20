@@ -3,6 +3,8 @@ defmodule ExDropbox.Api.Base do
     Base module that acts as a mediator for the api resources
   """
 
+  # TODO: remove api_host and api_resource and replace them
+  # with url, params - more obvious...
   def get(api_host, api_resource) do
     ExDropbox.Configuration.get[:access_token]
     |> validate_request
@@ -34,6 +36,7 @@ defmodule ExDropbox.Api.Base do
 
   @moduledoc """
     handle response from httpoison call
+    TODO: make shure you cover every response type dropbox may return
   """
 
   defp handle_response({:ok, %HTTPoison.Response{status_code: 200, body: body}}) do
