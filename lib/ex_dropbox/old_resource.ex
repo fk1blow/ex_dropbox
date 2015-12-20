@@ -1,4 +1,4 @@
-defmodule ExDropbox.OldResource do
+defmodule ExDropbox.Resource do
   @moduledoc """
     It imports every module needed by a resource and adds
     a set of utility functions that will process a resource response
@@ -8,33 +8,29 @@ defmodule ExDropbox.OldResource do
     quote do
       import ExDropbox.Api.Base
       import ExDropbox.Api.Endpoints
+      import ExDropbox.Resource
+    end
+  end
 
-      @doc """
-        to_map when the resource wants to specify extraction of specific fields
-      """
-      def to_map({:ok, resource_string}, resource_fields) do
-        case Poison.decode resource_string do
-          {:ok, resource} -> resource |> Dict.take resource_fields
-          {:error, reason} -> {:error, reason}
-        end
+  defmacro resource(name, do: block) do
+    function_name = String.to_atom(name)
+    quote do
+      @doc "def user_info(), do: get(....)"
+      def unquote(function_name)() do
+        get(unquote(:"#{block[:host]}_hostname")(),
+          "#{unquote(block[:url_path])}")
       end
 
-      def to_map({:error, resource_string}, resource_fields) do
-        {:error, resource_string}
+      @doc "def user_info(url_segment), do: get(....)"
+      def unquote(function_name)(url_segment) do
+        get(unquote(:"#{block[:host]}_hostname")(),
+          "#{unquote(block[:url_path])}#{url_segment}")
       end
 
-      @doc """
-        to_map for cases when a resource doesn't need specific fields
-      """
-      def to_map({:ok, resource_string}) do
-        case Poison.decode resource_string do
-          {:ok, resource} -> resource
-          {:error, reason} -> {:error, reason}
-        end
-      end
-
-      def to_map({:error, resource_string}) do
-        {:error, resource_string}
+      @doc "def user_info(url_segment, params), do: get(....)"
+      def unquote(function_name)(url_segment, params) do
+        get(unquote(:"#{block[:host]}_hostname")(),
+          "#{unquote(block[:url_path])}#{url_segment}")
       end
     end
   end

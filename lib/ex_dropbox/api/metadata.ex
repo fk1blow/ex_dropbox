@@ -1,26 +1,16 @@
 defmodule ExDropbox.Api.Metadata do
-  use ExDropbox.Resource
+  import ExDropbox.Api.Base
+  import ExDropbox.Api.Endpoints
+  import ExDropbox.Api.Parser
 
-  resource "metadata", do: [host: "api", url_path: "/metadata/auto"]
+  # TODO: redefine these fields
+  @resource_fields ["a", "b"]
 
-  resource "metadata_link", do: [host: "api", url_path: "/metadata/link"]
+  def metadata(path) do
+    get(api_hostname, "/metadata/auto/#{path}") |> to_map @resource_fields
+  end
 
-  # def metadata_link do
-  #   raise "not implemented"
-  # end
-
-
-  #
-  # v1
-  #
-
-  # @resource_fields ["contents"]
-
-  # def metadata(path \\ "/", params \\ %{}) do
-  #   get(api_hostname, "/metadata/auto/#{path}") |> to_map @resource_fields
-  # end
-
-  # def metadata_link do
-  #   raise "not implemented"
-  # end
+  def metadata(path, params) do
+    get(api_hostname, "/metadata/auto/#{path}") |> to_map @resource_fields
+  end
 end
