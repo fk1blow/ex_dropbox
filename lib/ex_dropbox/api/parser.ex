@@ -1,29 +1,25 @@
 defmodule ExDropbox.Api.Parser do
   @doc """
-    to_map when the resource wants to specify extraction of specific fields
+    transform a string to a map then picks a specific set of fields
   """
-  def to_map({:ok, string}, fields) do
+  def to_map({:ok, string}, picked_fields) do
     case Poison.decode string do
-      {:ok, resource} -> resource |> Dict.take fields
+      {:ok, result} -> result |> Dict.take picked_fields
       {:error, reason} -> {:error, reason}
     end
   end
 
-  def to_map({:error, string}, fields) do
-    {:error, string}
-  end
+  def to_map({:error, string}, picked_fields), do: {:error, string}
 
   @doc """
-    to_map for cases when a resource doesn't need specific fields
+    transform a string to a map
   """
   def to_map({:ok, string}) do
     case Poison.decode string do
-      {:ok, resource} -> resource
+      {:ok, result} -> result
       {:error, reason} -> {:error, reason}
     end
   end
 
-  def to_map({:error, string}) do
-    {:error, string}
-  end
+  def to_map({:error, string}), do: {:error, string}
 end
