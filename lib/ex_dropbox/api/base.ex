@@ -6,7 +6,6 @@ defmodule ExDropbox.Api.Base do
   # TODO: remove api_host and api_resource and replace them
   # with url, params - more obvious...
   def get(api_host, api_resource) do
-    IO.inspect api_host <> api_resource
     ExDropbox.Configuration.get[:access_token]
     |> validate_request
     |> handle_request(api_host, api_resource)

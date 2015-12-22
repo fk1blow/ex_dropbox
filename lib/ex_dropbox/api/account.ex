@@ -1,5 +1,7 @@
 defmodule ExDropbox.Api.Account do
-  use ExDropbox.Resource
+  import ExDropbox.Api.Base
+  import ExDropbox.Api.Endpoints
+  import ExDropbox.Api.Parser
 
   @resource_fields [
     "uid", "display_name", "email", "quota_info", "name_details"
