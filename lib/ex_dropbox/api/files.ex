@@ -1,6 +1,4 @@
 defmodule ExDropbox.Api.Files do
-  use ExDropbox.Resource
-
   # TODO: add 'revision' param
   def files(path \\ "/") do
     raise "not implemented"
