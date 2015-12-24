@@ -1,7 +1,6 @@
 defmodule ExDropbox.Api.Metadata do
-  # try to inject Endpoints inside Api.Base ???
-  # import ExDropbox.Api.Endpoints
   import ExDropbox.Api.Base
+  import ExDropbox.Api.Endpoints
   import ExDropbox.Parser
 
   def metadata(path, params \\ %{}) do

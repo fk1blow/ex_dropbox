@@ -3,12 +3,10 @@ defmodule ExDropbox.Api.Base do
     Base module that acts as a mediator for the api resources
   """
 
-  # TODO: remove api_host and api_resource and replace them
-  # with url, params - more obvious...
   def get(endpoint, params \\ %{}) do
     ExDropbox.Configuration.get[:access_token]
     |> validate_request
-    |> handle_request(endpoint)
+    |> handle_request(endpoint, params)
     |> handle_response
   end
 
@@ -26,11 +24,12 @@ defmodule ExDropbox.Api.Base do
     handles request for depending on the validation - makes the httpoison request
   """
 
-  defp handle_request({:error, reason}, _), do: {:error, reason}
+  defp handle_request({:error, reason}, _, _), do: {:error, reason}
 
-  defp handle_request(token, endpoint) do
-    headers = %{"Authorization" => "Bearer #{token}"}
-    HTTPoison.get(endpoint, headers)
+  defp handle_request(token, endpoint, params) do
+    headers = %{"Authorization" => "Bearer #{token}", "list" => "false"}
+    url = endpoint <> request_params(params)
+    HTTPoison.get(url, headers)
   end
 
   @moduledoc """
@@ -55,4 +54,17 @@ defmodule ExDropbox.Api.Base do
   end
 
   defp handle_response({:error, reason}), do: {:error, reason}
+
+  @moduledoc """
+    url utils
+  """
+
+  defp request_params(params) do
+    no_ampersand = fn str -> String.slice(str, 0, String.length(str) - 1) end
+    to_url_params = fn (x, acc) -> "#{acc}#{elem x, 0}=#{elem x, 1}&" end
+
+    Dict.to_list(params)
+    |> List.foldl("?", &(to_url_params.(&1, &2)))
+    |> no_ampersand.()
+  end
 end
