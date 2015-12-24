@@ -5,10 +5,10 @@ defmodule ExDropbox.Api.Base do
 
   # TODO: remove api_host and api_resource and replace them
   # with url, params - more obvious...
-  def get(api_host, api_resource) do
+  def get(endpoint, params \\ %{}) do
     ExDropbox.Configuration.get[:access_token]
     |> validate_request
-    |> handle_request(api_host, api_resource)
+    |> handle_request(endpoint)
     |> handle_response
   end
 
@@ -26,12 +26,11 @@ defmodule ExDropbox.Api.Base do
     handles request for depending on the validation - makes the httpoison request
   """
 
-  defp handle_request({:error, reason}, _, _), do: {:error, reason}
+  defp handle_request({:error, reason}, _), do: {:error, reason}
 
-  defp handle_request(token, api_host, api_resource) do
+  defp handle_request(token, endpoint) do
     headers = %{"Authorization" => "Bearer #{token}"}
-    url = api_host <> api_resource
-    HTTPoison.get(url, headers)
+    HTTPoison.get(endpoint, headers)
   end
 
   @moduledoc """
