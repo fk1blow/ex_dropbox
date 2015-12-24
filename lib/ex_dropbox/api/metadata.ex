@@ -5,6 +5,6 @@ defmodule ExDropbox.Api.Metadata do
 
   def metadata(path, params \\ %{}) do
     get("#{api_hostname}/metadata/auto/#{path}", params)
-    |> parse(ExDropbox.Model.Metadata)
+    |> parse_to(ExDropbox.Model.Metadata)
   end
 end
