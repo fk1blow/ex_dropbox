@@ -27,8 +27,8 @@ defmodule ExDropbox.Api.Base do
   defp handle_request({:error, reason}, _, _), do: {:error, reason}
 
   defp handle_request(token, endpoint, params) do
-    headers = %{"Authorization" => "Bearer #{token}", "list" => "false"}
     url = endpoint <> request_params(params)
+    headers = %{"Authorization" => "Bearer #{token}"}
     HTTPoison.get(url, headers)
   end
 
