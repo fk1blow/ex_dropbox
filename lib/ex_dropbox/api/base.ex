@@ -1,15 +1,4 @@
 defmodule ExDropbox.Api.Base do
-  @doc """
-    sets up Base's user
-  """
-  defmacro __using__(_opts) do
-    quote do
-      import ExDropbox.Api.Base
-      import ExDropbox.Api.Endpoints
-      import ExDropbox.Parser
-    end
-  end
-
 
   @doc """
     Base module that acts as a mediator for the api resources
@@ -21,18 +10,6 @@ defmodule ExDropbox.Api.Base do
     |> handle_request(endpoint, params)
     |> handle_response
   end
-
-  @doc """
-    Builds and exposes a set of functions which will compose the
-    endpoints for the various hostnames of dropbox api
-
-    Just to... dynamic
-  """
-  # ["api", "content", "notify"] |> Enum.each fn(host) ->
-  #   def unquote(:"#{host}_hostname")() do
-  #     "https://#{unquote(host)}.dropboxapi.com/1"
-  #   end
-  # end
 
   @doc """
     request validations - basically, checks for access_token validity
