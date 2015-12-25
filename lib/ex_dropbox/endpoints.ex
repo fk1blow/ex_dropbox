@@ -1,7 +1,7 @@
 defmodule ExDropbox.Api.Endpoints do
   @moduledoc """
-    Exposes a set of function, to retrieve the endpoints for
-    the various hostnames that dropbox api exposes
+    Builds and exposes a set of functions which will compose the
+    endpoints for the various hostnames of dropbox api
   """
   ["api", "content", "notify"] |> Enum.each fn(host) ->
     def unquote(:"#{host}_hostname")() do

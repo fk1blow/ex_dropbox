@@ -21,9 +21,13 @@ defmodule ExDropbox do
   defdelegate files, to: ExDropbox.Api.Files, as: :files
 
   @doc "Retrieves file and folder metadata"
+<<<<<<< HEAD
   defdelegate [metadata, metadata(path, params)], to: ExDropbox.Api.Metadata, as: :metadata
 
   defdelegate [metadata(path), metadata(params)], to: ExDropbox.Api.Metadata, as: :metadata
+=======
+  defdelegate [metadata(path), metadata(path, params)], to: ExDropbox.Api.Metadata, as: :metadata
+>>>>>>> 75f2ef134c51ac70249907fc1c98d0398a0e0bc4
 
   @doc "Retrieves metadata about a shared link"
   defdelegate metadata_link(params), to: ExDropbox.Api.Metadata, as: :metadata_link
