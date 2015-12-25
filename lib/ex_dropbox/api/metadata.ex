@@ -1,7 +1,5 @@
 defmodule ExDropbox.Api.Metadata do
-  import ExDropbox.Api.Base
-  import ExDropbox.Api.Endpoints
-  import ExDropbox.Parser
+  use ExDropbox.Api.Base
 
   def metadata(path, params \\ %{}) do
     get("#{api_hostname}/metadata/auto/#{path}", params)

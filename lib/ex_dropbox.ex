@@ -17,17 +17,34 @@ defmodule ExDropbox do
   @doc "Retrieves information about the user's account"
   defdelegate [account_info, account_info(params)], to: ExDropbox.Api.Account, as: :account_info
 
-  @doc "Downloads a file"
+  @doc """
+    Downloads a file. Note that this call goes to content.dropboxapi.com
+    instead of api.dropboxapi.com.
+  """
   defdelegate files, to: ExDropbox.Api.Files, as: :files
 
-  @doc "Retrieves file and folder metadata"
-<<<<<<< HEAD
-  defdelegate [metadata, metadata(path, params)], to: ExDropbox.Api.Metadata, as: :metadata
+  @doc """
+    Uploads a file using PUT semantics. Note that this call goes to
+    content.dropboxapi.com instead of api.dropboxapi.com.
 
-  defdelegate [metadata(path), metadata(params)], to: ExDropbox.Api.Metadata, as: :metadata
-=======
+    The preferred HTTP method for this call is PUT. For compatibility
+    with browser environments, the POST HTTP method is also recognized.
+
+    Note: Providing a Content-Length header set to the size of the uploaded
+    file is required so that the server can verify that it has received the
+    entire file contents.
+
+    ## PARAMETERS
+
+    `locale`
+    `overwrite`
+    `parent_rev`
+    `autorename`
+  """
+  defdelegate files_put, to: ExDropbox.Api.Files, as: :files_put
+
+  @doc "Retrieves file and folder metadata"
   defdelegate [metadata(path), metadata(path, params)], to: ExDropbox.Api.Metadata, as: :metadata
->>>>>>> 75f2ef134c51ac70249907fc1c98d0398a0e0bc4
 
   @doc "Retrieves metadata about a shared link"
   defdelegate metadata_link(params), to: ExDropbox.Api.Metadata, as: :metadata_link

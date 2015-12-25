@@ -1,16 +1,40 @@
 defmodule ExDropbox.Api.Base do
-  @moduledoc """
+  @doc """
+    sets up Base's user
+  """
+  defmacro __using__(_opts) do
+    quote do
+      import ExDropbox.Api.Base
+      import ExDropbox.Api.Endpoints
+      import ExDropbox.Parser
+    end
+  end
+
+
+  @doc """
     Base module that acts as a mediator for the api resources
   """
 
-  def get(endpoint, params \\ %{}) do
+  def get(hostname, endpoint, params \\ %{}) do
     ExDropbox.Configuration.get[:access_token]
     |> validate_request
     |> handle_request(endpoint, params)
     |> handle_response
   end
 
-  @moduledoc """
+  @doc """
+    Builds and exposes a set of functions which will compose the
+    endpoints for the various hostnames of dropbox api
+
+    Just to... dynamic
+  """
+  # ["api", "content", "notify"] |> Enum.each fn(host) ->
+  #   def unquote(:"#{host}_hostname")() do
+  #     "https://#{unquote(host)}.dropboxapi.com/1"
+  #   end
+  # end
+
+  @doc """
     request validations - basically, checks for access_token validity
   """
 
@@ -20,19 +44,18 @@ defmodule ExDropbox.Api.Base do
 
   defp validate_request(_), do: {:error, "invalid access token"}
 
-  @moduledoc """
+  @doc """
     handles request for depending on the validation - makes the httpoison request
   """
 
   defp handle_request({:error, reason}, _, _), do: {:error, reason}
 
-  defp handle_request(token, endpoint, params) do
-    url = endpoint <> request_params(params)
+  defp handle_request(token, url, params) do
     headers = %{"Authorization" => "Bearer #{token}"}
-    HTTPoison.get(url, headers)
+    HTTPoison.get(url <> request_params(params), headers)
   end
 
-  @moduledoc """
+  @doc """
     handle response from httpoison call
     TODO: make shure you cover every response type dropbox may return
   """
@@ -55,7 +78,7 @@ defmodule ExDropbox.Api.Base do
 
   defp handle_response({:error, reason}), do: {:error, reason}
 
-  @moduledoc """
+  @doc """
     url utils
   """
 

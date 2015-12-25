@@ -8,5 +8,6 @@ defmodule ExDropbox.Parser do
       {:error, reason} -> {:error, reason}
     end
   end
+
   def parse_to({:error, string}, _), do: {:error, string}
 end
