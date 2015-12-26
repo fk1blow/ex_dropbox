@@ -1,8 +1,4 @@
 defmodule ExDropbox do
-  @moduledoc """
-    Client api for Dropbox
-  """
-
   @doc "set the configuration of the api"
   defdelegate configure(auth), to: ExDropbox.Configuration, as: :set
 
@@ -13,7 +9,6 @@ defmodule ExDropbox do
     Dropbox api functions, listed in the same
     order as https://www.dropbox.com/developers-v1/core/docs
   """
-
   @doc "Retrieves information about the user's account"
   defdelegate [account_info, account_info(params)], to: ExDropbox.Api.Account, as: :account_info
 
@@ -21,7 +16,7 @@ defmodule ExDropbox do
     Downloads a file. Note that this call goes to content.dropboxapi.com
     instead of api.dropboxapi.com.
   """
-  defdelegate files, to: ExDropbox.Api.Files, as: :files
+  defdelegate [files(path), files(path, params)], to: ExDropbox.Api.Files, as: :files
 
   @doc """
     Uploads a file using PUT semantics. Note that this call goes to
