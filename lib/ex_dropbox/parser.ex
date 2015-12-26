@@ -16,5 +16,5 @@ defmodule ExDropbox.Parser do
   #   end
   # end
 
-  # def parse_to({:error, string}, _), do: {:error, string}
+  def parse_to({:error, string}, _), do: {:error, string}
 end
