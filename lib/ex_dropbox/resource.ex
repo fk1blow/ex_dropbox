@@ -12,18 +12,11 @@ defmodule ExDropbox.Resource do
     will call a Base.get/2 request
   """
   defmacro get(name, meta) do
-    compile :get, resource_name: name, resource_meta: meta
+    compile :get, [resource_name: name, resource_meta: meta]
   end
 
   defmacro post(name, meta) do
-    raise "unimplemented"
-  end
-
-  @doc """
-    TBD
-  """
-  defmacro post(resource, meta) do
-    IO.puts "`post` macro not implemented"
+    compile :post, resource_name: name, resource_meta: meta
   end
 
   @doc """
@@ -31,31 +24,41 @@ defmodule ExDropbox.Resource do
   """
 
   defp compile(method_type, [resource_name: name, resource_meta: meta]) do
-    IO.puts "compile:"
-    IO.inspect method_type
-    IO.inspect name
-    IO.inspect meta
-
     case method_type do
-      :get  -> compile_get resource_name: name, resource_meta: meta
-      :post -> raise "not implemented"
+      :get  -> compile_get([resource_name: name, resource_meta: meta])
+      :post -> compile_post([resource_name: name, resource_meta: meta])
       _     -> raise "possible invalid method_type, when trying to compile resource method"
     end
   end
 
   defp compile_get([resource_name: name, resource_meta: meta]) do
-    IO.puts "compile_get:"
-    IO.inspect name
-    IO.inspect meta
-
     unless meta[:from] do
       raise ":from, the url/endpoint of the resource, should always be defined"
     end
 
-    quote do
-      def unquote(:"#{name}")() do
-        get("/some/url", %{})
+    # # dunno a better way to dynamically define functions...
+    if meta[:segment] do
+      quote do
+        def unquote(:"#{name}")(segment, params \\ %{}) do
+          ExDropbox.Request.do_get(unquote(meta[:from]) <> segment, params)
+        end
+      end
+    else
+      quote do
+        def unquote(:"#{name}")(params \\ %{}) do
+          ExDropbox.Request.do_get(unquote(meta[:from]), params)
+        end
       end
     end
+
+    #
+  end
+
+  def compile_post([resource_name: name, resource_meta: meta]) do
+    unless meta[:to] do
+      raise ":from, the url/endpoint of the resource, should always be defined"
+    end
+
+    IO.puts "should define the post requests"
   end
 end
