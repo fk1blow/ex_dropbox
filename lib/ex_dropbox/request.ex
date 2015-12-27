@@ -1,5 +1,9 @@
 defmodule ExDropbox.Request do
-  def do_get(url, headers) do
+  def get(url, headers) do
     IO.puts "Request.get: " <> url <> " and headers: " <> inspect(headers)
+  end
+
+  def post(url, headers) do
+    IO.puts "Request.post: " <> url <> " and headers: " <> inspect(headers)
   end
 end

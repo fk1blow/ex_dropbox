@@ -1,4 +1,4 @@
-defmodule ExDropbox.OldConfiguration do
+defmodule ExDropbox.OmniConfiguration do
   use GenServer
 
   # client module
