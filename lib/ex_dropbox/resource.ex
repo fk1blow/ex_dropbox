@@ -58,9 +58,9 @@ defmodule ExDropbox.Resource do
           # add the signed authorization header, if "signed_request" is true
           # if (signed_request)
 
-          if unquote(meta[:options][:signed]) || unquote(signed_request) do
-            headers = %{"Authorization" => "Bearer 234831yhdaasb12asdh3248f"}
-          end
+          # if unquote(meta[:options][:signed]) || unquote(signed_request) do
+          #   headers = %{"Authorization" => "Bearer 234831yhdaasb12asdh3248f"}
+          # end
 
           # compose the url from the meta[:from] plus segment plus params(as query string)
           ExDropbox.Request.get(unquote(meta[:from]) <> segment, headers)
