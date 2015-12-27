@@ -1,4 +1,6 @@
 defmodule ExDropbox.Resource do
+  import ExDropbox.Request
+
   defmacro __using__(_opts) do
     quote do
       import ExDropbox.Resource
@@ -9,32 +11,12 @@ defmodule ExDropbox.Resource do
     It defines a function that generates an expression which
     will call a Base.get/2 request
   """
-  defmacro get(resource, meta) do
-    unless meta[:from] do
-      # I do not know how to deal with this stuff. You can just let the code
-      # work but it will thow at runtime, because the url won't be valid
-      raise "unable to generate a resource without an endpoint"
-    end
+  defmacro get(name, meta) do
+    compile :get, resource_name: name, resource_meta: meta
+  end
 
-    if meta[:segment] do
-      quote do
-        @doc """
-          get with a segment and params - function/2
-        """
-        def unquote(String.to_atom(resource))(segment, params \\ %{}) do
-          "get(#{unquote(meta[:from])}, #{segment}, #{inspect(params)}})"
-        end
-      end
-    else
-      quote do
-        @doc """
-          get with just params - function/1
-        """
-        def unquote(String.to_atom(resource))(params \\ %{}) do
-          "get(#{unquote(meta[:from])}, params)"
-        end
-      end
-    end
+  defmacro post(name, meta) do
+    raise "unimplemented"
   end
 
   @doc """
@@ -42,5 +24,38 @@ defmodule ExDropbox.Resource do
   """
   defmacro post(resource, meta) do
     IO.puts "`post` macro not implemented"
+  end
+
+  @doc """
+    This area becomes private
+  """
+
+  defp compile(method_type, [resource_name: name, resource_meta: meta]) do
+    IO.puts "compile:"
+    IO.inspect method_type
+    IO.inspect name
+    IO.inspect meta
+
+    case method_type do
+      :get  -> compile_get resource_name: name, resource_meta: meta
+      :post -> raise "not implemented"
+      _     -> raise "possible invalid method_type, when trying to compile resource method"
+    end
+  end
+
+  defp compile_get([resource_name: name, resource_meta: meta]) do
+    IO.puts "compile_get:"
+    IO.inspect name
+    IO.inspect meta
+
+    unless meta[:from] do
+      raise ":from, the url/endpoint of the resource, should always be defined"
+    end
+
+    quote do
+      def unquote(:"#{name}")() do
+        get("/some/url", %{})
+      end
+    end
   end
 end
