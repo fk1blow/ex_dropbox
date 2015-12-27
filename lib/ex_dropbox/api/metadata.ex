@@ -1,10 +1,6 @@
 defmodule ExDropbox.Api.Metadata do
+  use ExDropbox.Resource
 
-  def metadata(path, params \\ %{}) do
-    raise "not implemented"
-  end
-
-  def metadata_link(params) do
-    raise "not implemented"
-  end
+  get "metadata", endpoint: "api.dropboxapi.com/1/metadata/auto",
+                  segment: "path"
 end

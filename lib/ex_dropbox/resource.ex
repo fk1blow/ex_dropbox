@@ -5,81 +5,39 @@ defmodule ExDropbox.Resource do
     end
   end
 
-  # defmacro resource(description, do: block) do
-  #   quote do
-  #     defmodule unquote(String.to_atom(description)) do
-  #       @name unquote(description)
-  #     end
-  #   end
-  # end
+  @doc """
+    It defines a function that generates an expression that
+    will call a Base.get/2 request
+  """
+  defmacro get(resource, meta) do
+    unless meta[:endpoint] do
+      # I do not know how to deal with this stuff. You can just let the code
+      # work but it will thow at runtime, because the url won't be valid
+      raise "unable to generate a resource without an endpoint"
+    end
 
-  # defmacro get(description, [segments: segments, params: params]) do
-  #   IO.puts "inside get"
-  #   IO.inspect description
-  # end
-
-  # A more generic way to catch most of the variations
-  defmacro get(description, attributes) do
-    # IO.inspect attributes[:segments]
-    # IO.inspect hd attributes
-    # IO.inspect tl attributes
-
-    quote do
-      def unquote(String.to_atom(description))(params \\ %{}) do
-        IO.puts "inside the first one :D"
-        IO.inspect params
+    if meta[:segment] do
+      quote do
+        @doc """
+          get with a segment and params
+        """
+        def unquote(String.to_atom(resource))(segment, params \\ %{}) do
+          "get(#{unquote(meta[:endpoint])}, #{segment}, #{inspect(params)}})"
+        end
+      end
+    else
+      quote do
+        @doc """
+          get with just params
+        """
+        def unquote(String.to_atom(resource))(params \\ %{}) do
+          "get(#{unquote(meta[:endpoint])}, params)"
+        end
       end
     end
   end
 
-  defmacro get(description) do
-    # IO.inspect attributes[:segments]
-    # IO.inspect hd attributes
-    # IO.inspect tl attributes
-
-    quote do
-      def unquote(String.to_atom(description))() do
-        IO.puts "inside the first one :D"
-      end
-    end
-  end
-
-
-  defmacro get(description, [segments: segments, params: params]) do
-    quote do
-      # ...here just to test some asumptions
-      # defmodule unquote(String.to_atom("Metadata")) do
-      #   @name unquote(description)
-      # end
-
-      if Enum.count(unquote(segments)) == 1 do
-        def unquote(String.to_atom(description))(seg, params \\ %{}) do
-          IO.puts "should have generate a Base.get() function call"
-          IO.inspect unquote(segments)
-          IO.inspect unquote(params)
-        end
-      end
-
-      if Enum.count(unquote(segments)) == 0 || is_nil unquote(segments) do
-        def unquote(String.to_atom(description))(params \\ %{}) do
-          IO.puts "should have generate a Base.get() function call"
-          IO.inspect unquote(params)
-        end
-      end
-    end
+  defmacro post(resource, meta) do
+    #
   end
 end
-
-#   defmacro resource(description, do: block) do
-#     quote do
-#       def unquote(:"#{description}")(segment, params \\ %{}) when is_bitstring(segment) do
-#         url = unquote("#{block[:endpoint]}#{block[:path]}")
-#         if String.length(segment) > 0, do: url = url <> "/#{segment}"
-#       end
-
-#       def unquote(:"#{description}")(params \\ %{}) when :erlang.is_map(params) do
-#         url = unquote("#{block[:endpoint]}#{block[:path]}")
-#         if String.length(segment) > 0, do: url = url <> "/#{segment}"
-#       end
-#     end
-#   end
