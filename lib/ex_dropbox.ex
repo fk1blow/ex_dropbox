@@ -1,4 +1,10 @@
 defmodule ExDropbox do
+  @doc """
+    Fuck this! Buid a proper way to handle a token. This api will need to
+    deal with more than one user at a time.
+
+    TODO: build a proper Configuration module that can handle multiple accounts
+  """
   @doc "set the configuration of the api"
   defdelegate configure(auth), to: ExDropbox.Configuration, as: :set
 
@@ -11,32 +17,6 @@ defmodule ExDropbox do
   """
   @doc "Retrieves information about the user's account"
   defdelegate [account_info, account_info(params)], to: ExDropbox.Api.Account, as: :account_info
-
-  @doc """
-    Downloads a file. Note that this call goes to content.dropboxapi.com
-    instead of api.dropboxapi.com.
-  """
-  defdelegate [files(path), files(path, params)], to: ExDropbox.Api.Files, as: :files
-
-  @doc """
-    Uploads a file using PUT semantics. Note that this call goes to
-    content.dropboxapi.com instead of api.dropboxapi.com.
-
-    The preferred HTTP method for this call is PUT. For compatibility
-    with browser environments, the POST HTTP method is also recognized.
-
-    Note: Providing a Content-Length header set to the size of the uploaded
-    file is required so that the server can verify that it has received the
-    entire file contents.
-
-    ## PARAMETERS
-
-    `locale`
-    `overwrite`
-    `parent_rev`
-    `autorename`
-  """
-  defdelegate files_put, to: ExDropbox.Api.Files, as: :files_put
 
   @doc "Retrieves file and folder metadata"
   defdelegate [metadata(path), metadata(path, params)], to: ExDropbox.Api.Metadata, as: :metadata
