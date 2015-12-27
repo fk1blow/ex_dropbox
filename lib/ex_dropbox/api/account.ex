@@ -1,11 +1,11 @@
 defmodule ExDropbox.Api.Account do
   use ExDropbox.Resource
 
-  resource "account_info" do
-    [
-      endpoint: "https://api.dropboxapi.com/v1",
-      path: "/account/info",
-      type: "get"
-    ]
-  end
+  get "nomadata", segments: ["path"], params: [list: "false", foo: "2812"]
+  # get "metadata", params: %{}
+  # get "metadata_link", segments: ["path"], params: %{}
+
+  # resource "metadata" do
+    # get "/metadata/auto", segments: ["path"], params: %{}
+  # end
 end
