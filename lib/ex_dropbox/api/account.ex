@@ -1,5 +1,5 @@
 defmodule ExDropbox.Api.Account do
   use ExDropbox.Resource
 
-  get "account_info", endpoint: "api.dropboxapi.com/1/account/info"
+  get "account_info", from: "api.dropboxapi.com/1/account/info"
 end

@@ -1,6 +1,6 @@
 defmodule ExDropbox do
   @doc "Retrieves information about the user's account"
-  # defdelegate [account_info, account_info(params)], to: ExDropbox.Api.Account, as: :account_info
+  defdelegate [account_info, account_info(params)], to: ExDropbox.Api.Account, as: :account_info
 
   @doc "Retrieves file and folder metadata"
   defdelegate [metadata(path), metadata(path, params)], to: ExDropbox.Api.Metadata, as: :metadata
