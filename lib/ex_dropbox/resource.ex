@@ -19,12 +19,11 @@ defmodule ExDropbox.Resource do
   # end
 
   # A more generic way to catch most of the variations
-  # defmacro get(description, attributes) do
-  #   IO.inspect hd attributes
-  #   IO.inspect tl attributes
-  # end
+  defmacro get(description, attributes) do
+    # IO.inspect attributes[:segments]
+    # IO.inspect hd attributes
+    # IO.inspect tl attributes
 
-  defmacro get(description, [params: params]) do
     quote do
       def unquote(String.to_atom(description))(params \\ %{}) do
         IO.puts "inside the first one :D"
@@ -32,6 +31,19 @@ defmodule ExDropbox.Resource do
       end
     end
   end
+
+  defmacro get(description) do
+    # IO.inspect attributes[:segments]
+    # IO.inspect hd attributes
+    # IO.inspect tl attributes
+
+    quote do
+      def unquote(String.to_atom(description))() do
+        IO.puts "inside the first one :D"
+      end
+    end
+  end
+
 
   defmacro get(description, [segments: segments, params: params]) do
     quote do
