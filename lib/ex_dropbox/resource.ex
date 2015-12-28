@@ -40,13 +40,12 @@ defmodule ExDropbox.Resource do
       raise ":from, the url/endpoint of the resource, should always be defined"
     end
 
-    signed_request = Application.get_env(:ex_dropbox, :authorize_resource)
-
-    IO.puts signed_request
+    env_signed = Application.get_env(:ex_dropbox, :authorize_resource)
+    meta_signed = meta[:options][:signed]
 
     headers = %{}
 
-    # if signed_request && meta[:options][:signed] do
+    # unless meta_signed == false || env_signed == false do
     #   headers = %{"Authorization" => "Bearer 234831yhdaasb12asdh3248f"}
     # end
 
@@ -54,13 +53,13 @@ defmodule ExDropbox.Resource do
     if meta[:segment] do
       quote do
         def unquote(:"#{name}")(segment, params \\ %{}) do
-          # signed = Application.get_env(:ex_dropbox, :authorize_resource) || false
-          # add the signed authorization header, if "signed_request" is true
-          # if (signed_request)
+          ms = unquote(meta_signed)
+          es = unquote(env_signed)
 
-          # if unquote(meta[:options][:signed]) || unquote(signed_request) do
-          #   headers = %{"Authorization" => "Bearer 234831yhdaasb12asdh3248f"}
-          # end
+          # if none of the two are true, or one of them is true, sign request
+          if ms == true || (es == true && ms == nil) || (es == nil && ms == nil) do
+            headers = %{"Authorization" => "Bearer 234831yhdaasb12asdh3248f"}
+          end
 
           # compose the url from the meta[:from] plus segment plus params(as query string)
           ExDropbox.Request.get(unquote(meta[:from]) <> segment, headers)
