@@ -40,21 +40,12 @@ defmodule ExDropbox.Resource do
       raise ":from, the url/endpoint of the resource, should always be defined"
     end
 
-    env_signed = Application.get_env(:ex_dropbox, :authorize_resource)
-    meta_signed = meta[:options][:signed]
-
-    headers = %{}
-
-    # unless meta_signed == false || env_signed == false do
-    #   headers = %{"Authorization" => "Bearer 234831yhdaasb12asdh3248f"}
-    # end
-
     # # dunno a better way to dynamically define functions...
     if meta[:segment] do
       quote do
         def unquote(:"#{name}")(segment, params \\ %{}) do
-          ms = unquote(meta_signed)
-          es = unquote(env_signed)
+          es = Application.get_env(:ex_dropbox, :authorize_resource)
+          ms = unquote(meta[:options][:signed])
 
           # if none of the two are true, or one of them is true, sign request
           if ms == true || (es == true && ms == nil) || (es == nil && ms == nil) do
@@ -62,7 +53,7 @@ defmodule ExDropbox.Resource do
           end
 
           # compose the url from the meta[:from] plus segment plus params(as query string)
-          ExDropbox.Request.get(unquote(meta[:from]) <> segment, headers)
+          ExDropbox.Request.get(unquote(meta[:from]) <> segment, headers || %{})
         end
       end
     else
