@@ -35,8 +35,8 @@ defmodule ExDropbox.Resource do
   end
 
   defp compile_get([resource_name: name, resource_meta: meta]) do
-    unless meta[:from] do
-      raise ":from, the url/endpoint of the resource, should always be defined"
+    unless meta[:url] do
+      raise ":url, the url/endpoint of the resource, should always be defined"
     end
 
     #
@@ -53,14 +53,14 @@ defmodule ExDropbox.Resource do
             headers = %{"Authorization" => "Bearer 234831yhdaasb12asdh3248f"}
           end
 
-          # compose the url from the meta[:from] plus segment plus params(as query string)
-          Fetch.get(unquote(meta[:from]) <> segment, headers || %{}, params)
+          # compose the url url the meta[:url] plus segment plus params(as query string)
+          Fetch.get(unquote(meta[:url]) <> segment, headers || %{}, params)
         end
       end
     else
       quote do
         def unquote(:"#{name}")(params \\ %{}) do
-          Fetch.get(unquote(meta[:from]), params)
+          Fetch.get(unquote(meta[:url]), %{}, params)
         end
       end
     end
@@ -69,8 +69,8 @@ defmodule ExDropbox.Resource do
   end
 
   def compile_post([resource_name: name, resource_meta: meta]) do
-    unless meta[:to] do
-      raise ":to, the url/endpoint of the resource, should always be defined"
+    unless meta[:url] do
+      raise ":url, the url/endpoint of the resource, should always be defined"
     end
 
     IO.puts "should define the post requests"
