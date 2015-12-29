@@ -39,7 +39,9 @@ defmodule ExDropbox.Resource do
       raise ":from, the url/endpoint of the resource, should always be defined"
     end
 
-    # # dunno a better way to dynamically define functions...
+    #
+    # TODO: define some easier way to NOT duplicaye es, mes and the big if statement
+    #
     if meta[:segment] do
       quote do
         def unquote(:"#{name}")(segment, params \\ %{}) do
