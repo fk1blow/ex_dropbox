@@ -11,6 +11,11 @@ defmodule ExDropbox.Resource do
     It defines a function that generates an expression which
     will eventually call a ExDropbox.Fetch.get/2 request
   """
+  defmacro get(name, handler, meta) do
+    {module, _} = Code.eval_quoted(handler)
+    module.foo()
+  end
+
   defmacro get(name, meta) do
     compile :get, [resource_name: name, resource_meta: meta]
   end
@@ -21,6 +26,21 @@ defmodule ExDropbox.Resource do
   """
   defmacro post(name, meta) do
     compile :post, resource_name: name, resource_meta: meta
+  end
+
+  @doc """
+    Mixed utils area
+  """
+
+  defp authorization_headers(meta) do
+    es = Application.get_env(:ex_dropbox, :authorize_resource)
+    ms = meta[:options][:signed]
+    headers = %{}
+    # if none of the two are true, or one of them is true, sign request
+    if ms == true || (es == true && ms == nil) || (es == nil && ms == nil) do
+      headers = %{"Authorization" => "Bearer 234831yhdaasb12asdh3248f"}
+    end
+    headers
   end
 
   @doc """
@@ -39,28 +59,20 @@ defmodule ExDropbox.Resource do
       raise ":url, the url/endpoint of the resource, should always be defined"
     end
 
-    #
-    # TODO: define some easier way to NOT duplicaye es, mes and the big if statement
-    #
+    IO.inspect meta[:to]
+
+    headers = Macro.escape(authorization_headers(meta))
+
     if meta[:segment] do
       quote do
         def unquote(:"#{name}")(segment, params \\ %{}) do
-          es = Application.get_env(:ex_dropbox, :authorize_resource)
-          ms = unquote(meta[:options][:signed])
-
-          # if none of the two are true, or one of them is true, sign request
-          if ms == true || (es == true && ms == nil) || (es == nil && ms == nil) do
-            headers = %{"Authorization" => "Bearer 234831yhdaasb12asdh3248f"}
-          end
-
-          # compose the url url the meta[:url] plus segment plus params(as query string)
-          Fetch.get(unquote(meta[:url]) <> segment, headers || %{}, params)
+          Fetch.get(unquote(meta[:url]) <> segment, unquote(headers), params)
         end
       end
     else
       quote do
         def unquote(:"#{name}")(params \\ %{}) do
-          Fetch.get(unquote(meta[:url]), %{}, params)
+          Fetch.get(unquote(meta[:url]), unquote(headers), params)
         end
       end
     end
