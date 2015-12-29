@@ -1,6 +1,9 @@
-# ExDropbox
+ExDropbox
+=========
 
-**TODO: Add description**
+### A client for the Dropbox (api)[https://www.dropbox.com/developers-v1/core/docs]
+
+__mostly playing with the language, while having fun with it__
 
 ## Installation
 
