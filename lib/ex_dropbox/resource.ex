@@ -1,5 +1,5 @@
 defmodule ExDropbox.Resource do
-  import ExDropbox.Request
+  alias ExDropbox.Fetch
 
   defmacro __using__(_opts) do
     quote do
@@ -9,7 +9,7 @@ defmodule ExDropbox.Resource do
 
   @doc """
     It defines a function that generates an expression which
-    will eventually call a Base.get/2 request
+    will eventually call a ExDropbox.Fetch.get/2 request
   """
   defmacro get(name, meta) do
     compile :get, [resource_name: name, resource_meta: meta]
@@ -17,7 +17,7 @@ defmodule ExDropbox.Resource do
 
   @doc """
     It defines a function that generates an expression which
-    will eventually call a Base.post/2 request
+    will eventually call a ExDropbox.Fetch.post/2 request
   """
   defmacro post(name, meta) do
     compile :post, resource_name: name, resource_meta: meta
@@ -29,9 +29,8 @@ defmodule ExDropbox.Resource do
 
   defp compile(method_type, [resource_name: name, resource_meta: meta]) do
     case method_type do
-      :get  -> compile_get([resource_name: name, resource_meta: meta])
-      :post -> compile_post([resource_name: name, resource_meta: meta])
-      _     -> raise "possible invalid method_type, when trying to compile resource method"
+      :get  -> compile_get resource_name: name, resource_meta: meta
+      :post -> compile_post resource_name: name, resource_meta: meta
     end
   end
 
@@ -53,13 +52,13 @@ defmodule ExDropbox.Resource do
           end
 
           # compose the url from the meta[:from] plus segment plus params(as query string)
-          ExDropbox.Request.get(unquote(meta[:from]) <> segment, headers || %{})
+          Fetch.get(unquote(meta[:from]) <> segment, headers || %{}, params)
         end
       end
     else
       quote do
         def unquote(:"#{name}")(params \\ %{}) do
-          ExDropbox.Request.get(unquote(meta[:from]), params)
+          Fetch.get(unquote(meta[:from]), params)
         end
       end
     end
