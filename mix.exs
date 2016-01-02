@@ -29,7 +29,8 @@ defmodule ExDropbox.Mixfile do
   defp deps do
     [
       {:httpoison, "~> 0.8.0"},
-      {:poison, "~> 1.5"}
+      {:poison, "~> 1.5"},
+      {:klynt, github: "https://github.com/fk1blow/klynt.git"}
     ]
   end
 end
