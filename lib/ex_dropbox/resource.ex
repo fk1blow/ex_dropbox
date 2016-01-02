@@ -7,31 +7,26 @@ defmodule ExDropbox.Resource do
     end
   end
 
-  @doc """
-    It defines a function that generates an expression which
-    will eventually call a ExDropbox.Fetch.get/2 request
-  """
-  defmacro get(name, handler, meta) do
-    {module, _} = Code.eval_quoted(handler)
-    module.foo()
-  end
-
-  defmacro get(name, meta) do
-    compile :get, [resource_name: name, resource_meta: meta]
-  end
+  # defmacro get(name, handler, meta) do
+  #   {module, _} = Code.eval_quoted(handler)
+  #   module.foo()
+  # end
 
   @doc """
-    It defines a function that generates an expression which
-    will eventually call a ExDropbox.Fetch.post/2 request
+    GET action definition
+    It creates the action function, named `resource_name/2` that will eventually
+    call HTTPoison.get function
   """
-  defmacro post(name, meta) do
-    compile :post, resource_name: name, resource_meta: meta
-  end
+  defmacro get(name, meta), do: compile_get {name, meta}
 
   @doc """
-    Mixed utils area
+    POST action definition
+    It creates the action function, named `resource_name/2` that will eventually
+    call HTTPoison.post function
   """
+  defmacro post(name, meta), do: compile_post {name, meta}
 
+  # TODO: move this inside some other module
   defp authorization_headers(meta) do
     es = Application.get_env(:ex_dropbox, :authorize_resource)
     ms = meta[:options][:signed]
@@ -47,19 +42,21 @@ defmodule ExDropbox.Resource do
     This area becomes private
   """
 
-  defp compile(method_type, [resource_name: name, resource_meta: meta]) do
-    case method_type do
-      :get  -> compile_get resource_name: name, resource_meta: meta
-      :post -> compile_post resource_name: name, resource_meta: meta
-    end
-  end
+  # defp compile(method_type, [resource_name: name, resource_meta: meta]) do
+  #   case method_type do
+  #     :get  -> compile_get resource_name: name, resource_meta: meta
+  #     :post -> compile_post resource_name: name, resource_meta: meta
+  #   end
+  # end
 
   defp compile_get([resource_name: name, resource_meta: meta]) do
     unless meta[:url] do
       raise ":url, the url/endpoint of the resource, should always be defined"
     end
 
-    IO.inspect meta[:to]
+    {callback, _} = Code.eval_quoted(meta[:to])
+
+    IO.inspect callback
 
     headers = Macro.escape(authorization_headers(meta))
 

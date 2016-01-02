@@ -10,6 +10,6 @@ defmodule ExDropbox do
   post "metadata_link", url: "https://api.dropbox.com/1/metadata/link"
 
   get "files", url: "https://content.dropboxapi.com/1/files/auto",
-                to: ExDropbox.Api.Files,
+                to: ExDropbox.Api.Filesx,
            segment: ["path"]
 end
