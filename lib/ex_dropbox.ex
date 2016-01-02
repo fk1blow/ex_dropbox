@@ -1,7 +1,12 @@
 defmodule ExDropbox do
   use KL.Resource
 
-  get "account_info", url: "api.dropboxapi.com/1/account/info"
+  headers do
+    access_token = Application.get_env :exdropbox, :access_token
+    %{"Authorization" => "Bearer #{access_token}"}
+  end
+
+  get "account_info", url: "https://api.dropboxapi.com/1/account/info"
 
   get "metadata", url: "api.dropboxapi.com/1/metadata/auto/",
               segment: "path"

@@ -1,9 +1,9 @@
 %{"certifi": {:hex, :certifi, "0.3.0"},
   "comeonin": {:hex, :comeonin, "1.6.0"},
-  "hackney": {:hex, :hackney, "1.4.7"},
+  "hackney": {:hex, :hackney, "1.4.8"},
   "httpoison": {:hex, :httpoison, "0.8.0"},
-  "idna": {:hex, :idna, "1.0.2"},
-  "klynt": {:git, "https://github.com/fk1blow/klynt.git", "77605cb331f99394570ef43f9cc346dc5ce667f1", []},
+  "idna": {:hex, :idna, "1.0.3"},
+  "klynt": {:git, "https://github.com/fk1blow/klynt.git", "5a51b828912645a63e49dccb955b0c3bf80b9075", []},
   "mimerl": {:hex, :mimerl, "1.0.2"},
   "poison": {:hex, :poison, "1.5.0"},
   "ssl_verify_hostname": {:hex, :ssl_verify_hostname, "1.0.5"}}
