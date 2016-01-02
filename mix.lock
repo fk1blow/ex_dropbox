@@ -3,6 +3,7 @@
   "hackney": {:hex, :hackney, "1.4.7"},
   "httpoison": {:hex, :httpoison, "0.8.0"},
   "idna": {:hex, :idna, "1.0.2"},
+  "klynt": {:git, "https://github.com/fk1blow/klynt.git", "77605cb331f99394570ef43f9cc346dc5ce667f1", []},
   "mimerl": {:hex, :mimerl, "1.0.2"},
   "poison": {:hex, :poison, "1.5.0"},
   "ssl_verify_hostname": {:hex, :ssl_verify_hostname, "1.0.5"}}

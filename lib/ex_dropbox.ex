@@ -1,11 +1,10 @@
 defmodule ExDropbox do
-  use ExDropbox.Resource
+  use KL.Resource
 
   get "account_info", url: "api.dropboxapi.com/1/account/info"
 
   get "metadata", url: "api.dropboxapi.com/1/metadata/auto/",
-              segment: "path",
-              options: [signed: false]
+              segment: "path"
 
   post "metadata_link", url: "https://api.dropbox.com/1/metadata/link"
 
