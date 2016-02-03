@@ -1,6 +1,6 @@
 defmodule ExDropbox do
   use KL.Resource
-  alias KL.Hostname, as: Host
+  alias ExDropbox.Hostname, as: Host
 
   headers do
     access_token = Application.get_env :exdropbox, :access_token
