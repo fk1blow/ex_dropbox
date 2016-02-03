@@ -15,7 +15,7 @@ defmodule ExDropbox do
 
   get "metadata", url: "#{Host.api}/metadata/auto"
 
-  post "metadata", url: "#{Host.api}/metadata/link"
+  post "metadata_link", url: "#{Host.api}/metadata/link"
 
   post "delta", url: "#{Host.api}/delta"
 
